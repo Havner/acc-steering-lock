@@ -1,14 +1,19 @@
-# Simple SimHub plugin for setting SimuCUBE rotation based on ACC car
+# Simple SimHub plugin for setting wheel rotation based on ACC car
 
 ACC doesn't have a soft lock option. This plugin allows to use hard
 lock option with 1:1 steering ratio. The same way Content Manager does
 that.
 
+Currently it works for:
+- MMOs
+- all SimuCUBEs (1, 2S, 2P, 2U)
+- Thrustmasters (300, 500, TGT, TMX, TSPC, TSXW, TX, F1)
+
 ## Instalation
 
 Put the plugin in SimHub folder. Enable it in SimHub.
 
-## Configuration in TrueDrive
+## Configuration of your wheel
 
 Set whatever rotation you want, it doesn't matter, it will be changed
 anyway by the plugin.
@@ -24,6 +29,7 @@ the plugin.
 Check SimHub logs:
 
 	INFO	AccSteeringLock: Init()
+	INFO	AccSteeringLock: found supported wheel: Simucube 2 Pro
 	INFO	AccSteeringLock: setting rotation of amr_v8_vantage_gt3 to: 640
 
 In TrueDrive you should see "Angle set by game" below "Steering range".

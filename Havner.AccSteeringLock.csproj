@@ -51,6 +51,12 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SharpDX, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.4.2.0\lib\net45\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.DirectInput, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <HintPath>packages\SharpDX.DirectInput.4.2.0\lib\net45\SharpDX.DirectInput.dll</HintPath>
+    </Reference>
     <Reference Include="SimHub.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\SimHub.Logging.dll</HintPath>
@@ -73,9 +79,22 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SimuCube.cs" />
+    <Compile Include="Implementations\MMos.cs" />
+    <Compile Include="Implementations\SimuCube.cs" />
+    <Compile Include="Implementations\ThrustmasterF1.cs" />
+    <Compile Include="Implementations\ThrustmasterFerrariF1Advanced1.cs" />
+    <Compile Include="Implementations\ThrustmasterFerrariF1Advanced2.cs" />
+    <Compile Include="Implementations\ThrustmasterT300.cs" />
+    <Compile Include="Implementations\ThrustmasterT500.cs" />
+    <Compile Include="Implementations\ThrustmasterTGT.cs" />
+    <Compile Include="Implementations\ThrustmasterTMX.cs" />
+    <Compile Include="Implementations\ThrustmasterTSPC.cs" />
+    <Compile Include="Implementations\ThrustmasterTSXW.cs" />
+    <Compile Include="Implementations\ThrustmasterTX.cs" />
+    <Compile Include="IWheelSteerLockSetter.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WheelSteerLock.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Properties\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
@@ -83,6 +102,9 @@
       <Generator>MSBuild:Compile</Generator>
       <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

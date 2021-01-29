@@ -3,42 +3,32 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using HidLibrary;
 
-namespace Havner.AccSteeringLock
-{
-    internal class SimuCube
-    {
-        public virtual string ControllerName => "SimuCUBE";
+namespace AcTools.WheelAngles.Implementations {
+    internal abstract class MMos : IWheelSteerLockSetter {
+        public virtual string ControllerName => "MMos";
 
-        public virtual bool Test(string productGuid)
-        {
-            return string.Equals(productGuid, "0D5A16D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(productGuid, "0D5F16D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(productGuid, "0D6016D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase)
-                    || string.Equals(productGuid, "0D6116D0-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase);
+        public virtual bool Test(string productGuid) {
+            return string.Equals(productGuid, "0FFBF055-0000-0000-0000-504944564944", StringComparison.OrdinalIgnoreCase);
         }
 
         public int MaximumSteerLock => 65535;
         public int MinimumSteerLock => 40;
 
-        private enum ScReportId : byte
-        {
+        private enum ScReportId : byte {
             Out = 0x6B
         }
 
-        private enum ScCommand : byte
-        {
+        private enum ScCommand : byte {
             SetTemporaryVariable = 100
         }
 
-        private enum ScValue1 : ushort
-        {
+        private enum ScValue1 : ushort {
             TemporarySteeringAngle = 1,
             UnsetTemporarySteeringAngle = 2
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct CommandPacket
-        {
+        [StructLayout(LayoutKind.Sequential, Pack = 1),]
+        struct CommandPacket {
             public ScReportId ReportId;
             public ScCommand Command;
             public ScValue1 Value1;
@@ -47,12 +37,10 @@ namespace Havner.AccSteeringLock
             public static readonly int Size = Marshal.SizeOf(typeof(CommandPacket));
         }
 
-        public bool Apply(int steerLock, bool isReset, out int appliedValue)
-        {
+        public bool Apply(int steerLock, bool isReset, out int appliedValue) {
             appliedValue = Math.Min(Math.Max(steerLock, MinimumSteerLock), MaximumSteerLock);
 
-            var packet = new CommandPacket
-            {
+            var packet = new CommandPacket {
                 ReportId = ScReportId.Out,
                 Command = ScCommand.SetTemporaryVariable,
                 Value1 = isReset ? ScValue1.UnsetTemporarySteeringAngle : ScValue1.TemporarySteeringAngle,
@@ -65,9 +53,8 @@ namespace Havner.AccSteeringLock
             Marshal.Copy(ptr, data, 0, CommandPacket.Size);
             Marshal.FreeHGlobal(ptr);
 
-            var result = HidDevices.Enumerate(0x16d0, 0x0d5a, 0x0d5f, 0x0d60, 0x0d61).Aggregate(false, (a, b) => {
-                using (b)
-                {
+            var result = HidDevices.Enumerate(0xF055, 0x0FFB).Aggregate(false, (a, b) => {
+                using (b) {
                     //AcToolsLogging.Write($"Set to {steerLock}: " + b.DevicePath);
                     return a | b.Write(data);
                 }
