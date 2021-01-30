@@ -16,7 +16,8 @@ Put the plugin in SimHub folder. Enable it in SimHub.
 ## Configuration of your wheel
 
 Set whatever rotation you want, it doesn't matter, it will be changed
-anyway by the plugin.
+anyway by the plugin (you won't see the change in the Thrustmaster
+panel though).
 
 ## Configuration in ACC
 
