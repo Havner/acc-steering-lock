@@ -16,19 +16,37 @@ namespace Havner.AccSteeringLock
         internal string lastCar;
         internal int lastRotation;
         internal Dictionary<string, int> cars;
-        internal IWheelSteerLockSetter joy;
+
+        internal IWheelSteerLockSetter wheel;
+
+        internal void DetectDevices()
+        {
+            DirectInput di = new DirectInput();
+
+            foreach (DeviceInstance device in di.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly))
+            {
+                //SimHub.Logging.Current.Info("AccSteeringLock: detected: " + device.ProductGuid + " " + device.ProductName);
+                wheel = WheelSteerLock.Get(device.ProductGuid.ToString());
+                if (wheel != null)
+                {
+                    SimHub.Logging.Current.Info("AccSteeringLock: found supported wheel: " + device.ProductName + " handled by: " + wheel.ControllerName);
+                    break;
+                }
+            }
+
+            if (wheel == null)
+                SimHub.Logging.Current.Warn("AccSteeringLock: no supported wheel found.");
+        }
 
         internal void ResetRotation()
         {
-            if (joy == null) return;
+            if (wheel == null) return;
+            if (lastRotation <= 0) return;
 
-            if (lastRotation > 0)
-            {
-                SimHub.Logging.Current.Info("AccSteeringLock: resetting rotation from: " + lastRotation.ToString());
-                if (!joy.Apply(lastRotation, true, out lastRotation))
-                    SimHub.Logging.Current.Error("AccSteeringLock: IWheelSteerLockSetter::Apply() failed.");
-                lastRotation = 0;
-            }
+            SimHub.Logging.Current.Info("AccSteeringLock: resetting rotation from: " + lastRotation);
+            if (!wheel.Apply(lastRotation, true, out lastRotation))
+                SimHub.Logging.Current.Error("AccSteeringLock: IWheelSteerLockSetter::Apply() failed.");
+            lastRotation = 0;
         }
 
         /// <summary>
@@ -44,22 +62,6 @@ namespace Havner.AccSteeringLock
         public void Init(PluginManager pluginManager)
         {
             SimHub.Logging.Current.Info("AccSteeringLock: Init()");
-            DirectInput di = new DirectInput();
-
-            foreach (DeviceInstance device in di.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly))
-            {
-                //SimHub.Logging.Current.Info("AccSteeringLock: detected: " + device.ProductGuid + " " + device.ProductName);
-                joy = WheelSteerLock.Get(device.ProductGuid.ToString());
-                if (joy != null)
-                {
-                    SimHub.Logging.Current.Info("AccSteeringLock: found supported wheel: " + device.ProductName);
-                    break;
-                }
-            }
-            if (joy == null)
-            {
-                SimHub.Logging.Current.Warn("AccSteeringLock: no supported wheel found.");
-            }
 
             lastCar = null;
             lastRotation = 0;
@@ -107,6 +109,8 @@ namespace Havner.AccSteeringLock
                 {"mercedes_amg_gt4", 490},
                 {"porsche_718_cayman_gt4_mr", 800},
             };
+
+            DetectDevices();
         }
 
         /// <summary>
@@ -132,7 +136,6 @@ namespace Havner.AccSteeringLock
         /// <param name="data"></param>
         public void DataUpdate(PluginManager pluginManager, ref GameData data)
         {
-            if (joy == null) return;
             if (data.GameName != "AssettoCorsaCompetizione") return;
             if (!data.GameRunning)
             {
@@ -144,13 +147,18 @@ namespace Havner.AccSteeringLock
             if (data.NewData == null) return;
             if (data.NewData.CarId == lastCar) return;
 
-            ResetRotation();
+            // car has changed, if we have no wheel, try to re-detect
+            if (wheel == null)
+                DetectDevices();
             lastCar = data.NewData.CarId;
+            if (wheel == null) return;
+
+            ResetRotation();
             if (cars.TryGetValue(lastCar, out int rotation))
             {
                 SimHub.Logging.Current.Info("AccSteeringLock: setting rotation of " + lastCar + " to: " + rotation);
 
-                if (!joy.Apply(rotation, false, out lastRotation))
+                if (!wheel.Apply(rotation, false, out lastRotation))
                     SimHub.Logging.Current.Error("AccSteeringLock: IWheelSteerLockSetter::Apply() failed.");
                 else if (rotation != lastRotation)
                     SimHub.Logging.Current.Info("AccSteeringLock: rotation had to be clamped due to hardware limitations to: " + lastRotation);
