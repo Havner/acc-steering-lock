@@ -74,6 +74,7 @@ namespace Havner.AccSteeringLock
                 {"audi_r8_lms_evo", 720},
                 {"bentley_continental_gt3_2016", 640},
                 {"bentley_continental_gt3_2018", 640},
+                {"bmw_m4_gt3", 515},
                 {"bmw_m6_gt3", 565},
                 {"jaguar_g3", 720},
                 {"ferrari_488_gt3", 480},
