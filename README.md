@@ -25,6 +25,9 @@ Set the wheel rotation to 0. This means that the car will use 100%
 available steering lock. And the correct steering lock will be set by
 the plugin.
 
+WARNING: BMW M2 behaves wrongly when rotation in game is set to 0. Any
+other low value higher than 0 will do. E.g. 10.
+
 ## Confirmation that it works?
 
 Check SimHub logs:

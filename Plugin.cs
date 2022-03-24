@@ -67,11 +67,22 @@ namespace Havner.AccSteeringLock
             lastRotation = 0;
             cars = new Dictionary<string, int>()
             {
+                // CUP
+                {"porsche_991ii_gt3_cup", 800},
+                {"porsche_992_gt3_cup", 540},
+                // ST
+                {"lamborghini_huracan_st", 620},
+                {"lamborghini_huracan_st_evo2", 620},
+                // CHL
+                {"ferrari_488_challenge_evo", 480},
+                // TCX
+                {"bmw_m2_cs_racing", 360},
                 // GT3
                 {"amr_v12_vantage_gt3", 640},
                 {"amr_v8_vantage_gt3", 640},
                 {"audi_r8_lms", 720},
                 {"audi_r8_lms_evo", 720},
+                {"audi_r8_lms_evo_ii", 720},
                 {"bentley_continental_gt3_2016", 640},
                 {"bentley_continental_gt3_2018", 640},
                 {"bmw_m4_gt3", 515},
@@ -93,10 +104,6 @@ namespace Havner.AccSteeringLock
                 {"porsche_991_gt3_r", 800},
                 {"porsche_991ii_gt3_r", 800},
                 {"lamborghini_gallardo_rex", 720},
-                // ST
-                {"lamborghini_huracan_st", 620},
-                // CUP
-                {"porsche_991ii_gt3_cup", 800},
                 // GT4
                 {"alpine_a110_gt4", 720},
                 {"amr_v8_vantage_gt4", 640},
