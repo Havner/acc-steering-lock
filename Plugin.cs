@@ -25,7 +25,7 @@ namespace Havner.AccSteeringLock
 
             foreach (DeviceInstance device in di.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly))
             {
-                //SimHub.Logging.Current.Info("AccSteeringLock: detected: " + device.ProductGuid + " " + device.ProductName);
+                SimHub.Logging.Current.Info("AccSteeringLock: detected: " + device.ProductGuid + " " + device.ProductName);
                 wheel = WheelSteerLock.Get(device.ProductGuid.ToString());
                 if (wheel != null)
                 {
