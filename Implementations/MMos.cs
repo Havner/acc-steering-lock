@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using HidLibrary;
 
 namespace AcTools.WheelAngles.Implementations {
-    internal abstract class MMos : IWheelSteerLockSetter {
+    internal class MMos : IWheelSteerLockSetter {
         public virtual string ControllerName => "MMos";
 
         public virtual bool Test(string productGuid) {
