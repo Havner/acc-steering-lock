@@ -48,6 +48,7 @@ namespace Havner.AccSteeringLock
             {"lexus_rc_f_gt3", 640},
             {"mclaren_650s_gt3", 480},
             {"mclaren_720s_gt3", 480},
+            {"mclaren_720s_gt3_evo", 480},
             {"mercedes_amg_gt3", 640},
             {"mercedes_amg_gt3_evo", 640},
             {"nissan_gt_r_gt3_2017", 640},
