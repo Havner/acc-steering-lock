@@ -26,6 +26,13 @@ namespace Havner.AccSteeringLock
             {"ferrari_488_challenge_evo", 480},
             // TCX
             {"bmw_m2_cs_racing", 360},
+            // GT2
+            {"audi_r8_lms_gt2", 720},
+            {"ktm_xbow_gt2", 582},
+            {"maserati_mc20_gt2", 480},
+            {"mercedes_amg_gt2", 492},
+            {"porsche_935", 720},
+            {"porsche_991_gt2_rs_mr", 720},
             // GT3
             {"amr_v12_vantage_gt3", 640},
             {"amr_v8_vantage_gt3", 640},
