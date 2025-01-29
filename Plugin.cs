@@ -13,7 +13,7 @@ namespace Havner.AccSteeringLock
     public class Plugin : IPlugin, IDataPlugin
     {
         internal string lastCar;
-        internal int lastRotation;
+        internal int appliedRotation;
         static readonly internal Dictionary<string, int> cars = new Dictionary<string, int>()
         {
             // CUP
@@ -103,12 +103,12 @@ namespace Havner.AccSteeringLock
         internal void ResetRotation()
         {
             if (wheel == null) return;
-            if (lastRotation <= 0) return;
+            if (appliedRotation <= 0) return;
 
-            SimHub.Logging.Current.Info("AccSteeringLock: resetting rotation from: " + lastRotation);
-            if (!wheel.Apply(lastRotation, true, out lastRotation))
+            SimHub.Logging.Current.Info("AccSteeringLock: resetting rotation from: " + appliedRotation);
+            if (!wheel.Apply(appliedRotation, true, out appliedRotation))
                 SimHub.Logging.Current.Error("AccSteeringLock: IWheelSteerLockSetter::Apply() failed.");
-            lastRotation = 0;
+            appliedRotation = 0;
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Havner.AccSteeringLock
             SimHub.Logging.Current.Info("AccSteeringLock: Init()");
 
             lastCar = null;
-            lastRotation = 0;
+            appliedRotation = 0;
 
             DetectDevices();
         }
@@ -166,8 +166,7 @@ namespace Havner.AccSteeringLock
             if (data.NewData.CarId == lastCar) return;
 
             // car has changed, if we have no wheel, try to re-detect
-            if (wheel == null)
-                DetectDevices();
+            if (wheel == null) DetectDevices();
             lastCar = data.NewData.CarId;
             if (wheel == null) return;
 
@@ -176,10 +175,10 @@ namespace Havner.AccSteeringLock
             {
                 SimHub.Logging.Current.Info("AccSteeringLock: setting rotation of " + lastCar + " to: " + rotation);
 
-                if (!wheel.Apply(rotation, false, out lastRotation))
+                if (!wheel.Apply(rotation, false, out appliedRotation))
                     SimHub.Logging.Current.Error("AccSteeringLock: IWheelSteerLockSetter::Apply() failed.");
-                else if (rotation != lastRotation)
-                    SimHub.Logging.Current.Info("AccSteeringLock: rotation had to be clamped due to hardware limitations to: " + lastRotation);
+                else if (rotation != appliedRotation)
+                    SimHub.Logging.Current.Info("AccSteeringLock: rotation had to be clamped due to hardware limitations to: " + appliedRotation);
             }
             else
             {
